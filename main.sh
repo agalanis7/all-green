@@ -1,28 +1,26 @@
+#!/bin/bash
+
 git init
 
 touch junk
 
-declare -i x
 echo "Enter Beginning date [yyyymmdd]"
-read x
+read BEGIN_DATE
 
-declare -i y
 echo "Enter End date [yyyymmdd]"
-read y
+read END_DATE
 
-DATE=$x
+DATE=$BEGIN_DATE
 
-while [ $DATE -le $y ]
+while [[ "$DATE" -le "$END_DATE" ]]; do
+    echo 'Dont ask a barber if you need a haircut!' >> junk
 
-do
-	echo 'a' >> junk
+    git add .
 
-	git add .
+    msg="commit${DATE}"
 
-	msg='commit'${DATE}
+    GIT_COMMITTER_DATE="${DATE}T12:00:00" git commit -m "$msg"
 
-	git commit -m $msg --date="$(date -R -d ${DATE})"
-   	
-   	DATE=$(date +%Y%m%d -d "$DATE + 1 day")
+    DATE=$(date +%Y%m%d -d "$DATE + 1 day")
 
 done
